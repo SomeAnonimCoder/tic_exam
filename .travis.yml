@@ -1,0 +1,22 @@
+os: linux
+dist: bionic
+sudo: required
+dist: trusty
+before_install:
+- sudo apt-get install -y --no-install-recommends texlive-full chktex
+script:
+- mkdir _build
+- pdflatex -interaction=nonstopmode -halt-on-error -output-directory _build bilety.tex
+- chktex bilety.tex >linter.txt
+deploy:
+  provider: releases
+  api_key: 
+    secure: "p9m2MlBoUbytu3bbkBZZPRC9Rkef2Dt8ag3zAVnwpGRLgLdOqjXN9s949lUJCoqxlvLX6lWiKt9CzZBafo6uLdZQqdY8JEhUYfkJUFdHXwRxi1wlcZuqQ3zRpTj1dPEokd/G4L1iScSNPE2f/BHHmYLhNUo0A8BPvhx17DQ6DRDXOZlWtN/I8+XlTf7kRSrEUBhW0zrnrxstD7sSlee/ZbqYH6j/j/y2ft95gc2ux9ypLL7j+RSiVJxBbn3x+tWW53S32aV7+DGmcdcYN7DuEopyQ+gDZs1ZInLrowpKUxCfe+1xON/z3+5vWZKL94gK+xEQLb6q1tmA7zg5/VYxsi63x4lnFNxROhTiHMG17wJ841wUoGPsTbDd+KUttBducxjm2HCMoZ0Ur869UYZzCf3+s6rJcjbm8iQleewFNjDHKNQkNplgHfAQkt73kiCxEYPQh+9eFBrPuumDslZwdgGxxU143nkpQ7SJY1cmSlVUAFQLKCfOV7NJ0pRQrdHx1o9ZBQbLL6zAuz4URK7/kfSmBoie0uy2XmIahswvgFvBeZHCcUYku/NCOO5xn+XbnExjSgu/Av/jFmPWP9ZyL+xAvXT5z5h30vKtvOX0SUS0jzlHEpLdMrTcjjyWRhbpQ3ik74InufGM1fKX7kHkY4zVV6PEYi9qaey3WznjGiU="
+
+  file:
+  - _build/bilety.pdf
+  - bilety.tex
+  - linter.txt
+  skip_cleanup: true
+  on:
+    branch: master
